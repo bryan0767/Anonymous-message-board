@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bryan's Sandwich Shop!</title>
+    <meta name="description" content="Post something meaty">
+    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./public/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Sunflower:300" rel="stylesheet">
+  </head>
+  <body >
+    <div id ='image'></div>
+    
+    <div id = 'proj'>
+    
+    <header>
+      <form action = "/api/home" method = 'GET' id ='home' style ='outline:none'>
+      <input type= 'image' alt = 'submit' id = 'witch' src='https://orig00.deviantart.net/a1cb/f/2012/097/d/d/sandvich_by_th3davinci-d4vb0tj.png'/>        
+      </form>
+      <h1>
+        Bryan's Sandwich Shop
+      </h1>
+    </header>
+    
+    <div id='testui' >
+        <h4>New Sub</h4>   
+        <form action="/api/threads/test" method="post" id="newThread">
+          <textarea type="text"  id = "threadText" placeholder="Sub text..." name="text" required=""></textarea>
+          <input type='text' placeholder='Shop' id='board1' name='board' required=''>
+          <input type='password' placeholder='Password' class = 'deleteForm' name='delete_password' required=''>
+          <input type="submit" class='submitIt' value="Submit">
+        </form>
+    </div>
+    
+    <div id='testui'>
+        <h4>Delete a Sub</h4>
+        <form id="deleteThread">
+          <input type='text' placeholder='Sub' id='board3' name='board' required=''><br>
+          <input type='text' placeholder='id' id = 'thread_Id' name='thread_id' required=''><br>
+          <input type='password' class = 'deleteForm' placeholder='Password' name='delete_password' required=''><br>
+          <input type="submit" class= 'submitIt'value="Submit">
+        </form>
+    </div>
+      
+         <div id='testui3'>
+              <h4 id='header4' >Search for Subs</h4>
+             <button id = 'submitSearch'>Subs</button>
+             <div  id='list'></div>
+        </div>
+      
+<!--           <div id='testui3'>
+              <h4 id='header4' >Search for Shops</h4>
+             <button id = 'submitSearch2'>Shops</button>
+             <div  id='list2'></div>
+        </div> -->
+      
+         </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+    <script>
+      
+              let a = document.getElementById('submitSearch')
+              // let g = document.getElementById('submitSearch2')
+              let b = document.getElementById('list')
+              // let f = document.getElementById('list2')
+              let d = document.getElementById('listItems')
+              let c = []
+              // let e = []
+              
+               fetch("/api/threads/donuts")
+                  .then(x => x.json())
+                  .then(y => {
+                      y.map(x => {
+                        console.log(x)
+                        c.push(
+                          `<form action= '/donuts/${x.board}/${x._id}' method = "GET" id='formItems'>
+                            <input type='submit' name = '${x.text}' value = '${x.text}' id = 'listItems' data-key=${y.indexOf(x) + 1}>
+                            </form>`
+                          )
+                        })
+                       // console.log(c)
+                       //  e.push(
+                       //    `<form action= '/coco/${x.board}' method = "GET" id='formItems2'>
+                       //      <input type='submit' name = '${x.board}' value = '${x.board}' id = 'listItems2' data-key=${y.indexOf(x) + 1}>
+                       //      </form>`
+                       //    )
+                  b.innerHTML = c.join('')
+                 // f.innerHTML = e.join('')
+                        })
+           
+      
+      a.addEventListener('click',function() {
+                 if(b.style.display === 'block' ) {
+                   b.style.display = 'none'
+                 }
+                else {b.style.display = 'block'}
+                  })  
+      
+        // g.addEventListener('click',function() {
+        //          if(f.style.display === 'block' ) {
+        //            f.style.display = 'none'
+        //          }
+        //         else {f.style.display = 'block'}
+        //           })  
+      
+      $(function() { 
+        
+        $('#newThread').submit(function(){
+          var board = $('#board1').val();
+          console.log(board)
+          $(this).attr('action', "/api/threads/" + board);
+        });
+        
+        $('#newReply').submit(function(){
+          var board = $('#board4').val();
+          console.log(board)
+          $(this).attr('action', "/api/replies/" + board);
+        });
+        
+        $('#reportThread').submit(function(e){
+          var url = "/api/threads/"+$('#board2').val();
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+        
+        $('#deleteThread').submit(function(e){
+          var url = "/api/threads/"+$('#board3').val();
+                    console.log(e)
+          console.log(url)
+          console.log($('#board3'))
+          $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+              window.location.reload(true);
+            }
+           
+          });
+          e.preventDefault();
+        });
+        
+        $('#reportReply').submit(function(e){
+          var url = "/api/replies/"+$('#board5').val();
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+        
+        $('#deleteReply').submit(function(e){
+          var url = "/api/replies/"+$('#board6').val();
+          $.ajax({
+            type: "DELETE",
+            url: url,
+            data: $(this).serialize(),
+            success: function(data)
+            {
+              alert(data);
+            }
+          });
+          e.preventDefault();
+        });
+      });
+   </script>
+  </body>
+</html>
