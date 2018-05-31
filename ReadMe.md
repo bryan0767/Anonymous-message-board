@@ -1,4 +1,4 @@
-Anonymous message board made with JavaScript, HTML, CSS, Express, and MongoDB
+Anonymous message board made with JavaScript, JQuery, HTML, CSS, Express, and MongoDB
 
 https://sandwich-shop.glitch.me/
 
