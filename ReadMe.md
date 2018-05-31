@@ -20,7 +20,8 @@ Hopeful additions if time were to allow:
 
 Multiple pages for sub searching on front page.
 search for shops as well.
-make shops the star of the show by storing subs inside 
+
+make shops otherwise message boards, the star of the show by storing subs inside 
 each new shop and querying shop data instead of individual sub data.
 
 Home View
